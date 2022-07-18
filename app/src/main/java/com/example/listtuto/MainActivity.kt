@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,19 +38,21 @@ private fun MyApp(names: List<String> = listOf("World", "Compose")) {
 
 @Composable
 private fun Greeting(name: String) {
+    var expended = remember { mutableStateOf(false) }
+    val extraPadding = if(expended.value) 48.dp else 0.dp
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Row(modifier = Modifier.padding(24.dp)) {
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f).padding(bottom = extraPadding)
             ) {
                 Text(text = "Hello,")
                 Text(text = name)
             }
-            OutlinedButton(onClick = { /*TODO*/ }) {
-                Text(text = "Show More")
+            OutlinedButton(onClick = { expended.value = !expended.value }) {
+                Text(if (expended.value) "Show less" else "Show more")
             }
         }
         
